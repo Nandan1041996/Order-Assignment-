@@ -1,0 +1,99 @@
+<!-- result_page.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Result Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+        h3 {
+            color: #555;
+        }
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        a {
+            display: block;
+            margin-top: 20px;
+            text-align: center;
+            color: #007bff;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            // Function to handle form submission
+            $('#submitForm').on('click', function(event) {
+                event.preventDefault();
+                var selectedOrders = $('#salesOrderSelect').val();
+                if (selectedOrders.length === 0) {
+                    alert('Please select at least one Sales Order.');
+                    return;
+                }
+                // Redirect to another URL with selected Sales Orders
+                window.location.href = '/process_orders?orders=' + selectedOrders.join(',');
+            });
+        });
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h2>Result Page</h2>
+
+        <h3>Select Sales Orders:</h3>
+        <form id="selectForm">
+            <select id="salesOrderSelect" name="salesOrders[]" multiple>
+                {% for order_id in sales_orders %}
+                    <option value="{{ order_id }}">{{ order_id }}</option>
+                {% endfor %}
+            </select>
+            <br>
+            <button id="submitForm">Submit Selected Orders</button>
+        </form>
+
+        <a href="/">Upload More Files</a>
+    </div>
+</body>
+</html>
+
