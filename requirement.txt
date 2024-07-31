@@ -1,4 +1,0 @@
-xlrd 
-pandas 
-numpy 
-Flask
