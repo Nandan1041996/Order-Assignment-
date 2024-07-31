@@ -1,0 +1,12 @@
+2024-07-17 10:40:27,985 - ERROR - Exception occurred: "None of [Index(['Plnt', 'Material', '          Closing Stock', 'BUn'], dtype='object')] are in the [columns]"
+2024-07-30 17:30:27,965 - ERROR - Exception occurred: [Errno 13] Permission denied: 'uploads\\Rate_Table.xlsx'
+2024-07-30 17:31:30,616 - ERROR - Exception occurred: [Errno 13] Permission denied: 'uploads\\Rate_Table.xlsx'
+2024-07-30 17:33:13,753 - ERROR - Exception occurred: [Errno 13] Permission denied: 'uploads\\Rate_Table.xlsx'
+2024-07-31 11:11:22,141 - ERROR - Exception occurred: [Errno 13] Permission denied: 'uploads\\Stock.xlsx'
+2024-07-31 11:11:52,516 - ERROR - Exception occurred: [Errno 13] Permission denied: 'uploads\\Stock.xlsx'
+2024-07-31 14:27:32,526 - ERROR - Exception occurred: Selected order has no data.
+2024-07-31 14:28:18,886 - ERROR - Exception occurred: Selected order has no data.
+2024-07-31 14:28:19,836 - ERROR - Exception occurred: Selected order has no data.
+2024-07-31 14:28:20,032 - ERROR - Exception occurred: Selected order has no data.
+2024-07-31 14:28:20,199 - ERROR - Exception occurred: Selected order has no data.
+2024-07-31 14:28:20,384 - ERROR - Exception occurred: Selected order has no data.
