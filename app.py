@@ -13,7 +13,6 @@ from flask import Flask, request, flash, redirect, send_file, render_template, u
 from exception import DataNotAvailable
 
 
-
 # Initialize logger
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.ERROR)  # Set logging level to ERROR or higher
@@ -23,8 +22,8 @@ handler.setFormatter(formatter)
 logger.addHandler(handler)
 
 
-# initialize app
-app = Flask(__name__)
+app = Flask(__name__, template_folder='templates')
+
 app.secret_key = secrets.token_hex(16)
 
 
@@ -54,11 +53,11 @@ def upload_files():
         if 'pending_order_file' not in request.files or 'rate_file' not in request.files or 'stock_file' not in request.files:
             flash('No file part')
             return redirect(request.url)
-        print('in')
+   
         pending_order_file = request.files['pending_order_file']
         rate_file = request.files['rate_file']
         stock_file = request.files['stock_file']
-        print('in')
+   
         if not (allowed_file(pending_order_file.filename) and allowed_file(rate_file.filename) and allowed_file(stock_file.filename)):
             flash('Invalid file format. Please upload Excel files only.')
             return redirect(request.url)
@@ -66,7 +65,7 @@ def upload_files():
         filename1 = secure_filename(pending_order_file.filename)
         filename2 = secure_filename(rate_file.filename)
         filename3 = secure_filename(stock_file.filename)
-        print('in')
+
         pending_order_file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename1))
         rate_file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename2))
         stock_file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename3))
@@ -125,8 +124,8 @@ def upload_files():
         
     except Exception as e:
         logger.error(f"Exception occurred: {str(e)}")
-        return render_template('''error_page.html', error_message='Please ensure that your uploaded files include all columns show in Order Assignment Page
-                                    as well as any of this file should not open.''')
+        return jsonify({'error': 'Please ensure that your uploaded files include all columns show in Order Assignment Page.'}), 500
+ 
 
 @app.route('/process_orders', methods=['GET'])
 def process_orders():
@@ -163,8 +162,8 @@ def process_orders():
     
     except Exception as e:
         logger.error(f"Exception occurred: {str(e)}")
-        return jsonify({'error': f'Please ensure that your uploaded files include all columns show in Order Assignment Page.'}), 500
-    
+        return jsonify({'error': 'Data Not Found.'}), 500
+ 
     
 @app.route('/download_csv_trigger', methods=['GET'])
 def download_csv_trigger():

@@ -10,3 +10,26 @@
 2024-07-31 14:28:20,032 - ERROR - Exception occurred: Selected order has no data.
 2024-07-31 14:28:20,199 - ERROR - Exception occurred: Selected order has no data.
 2024-07-31 14:28:20,384 - ERROR - Exception occurred: Selected order has no data.
+2024-08-06 10:21:07,622 - ERROR - Exception occurred: "['Plnt', '          Closing Stock', 'BUn'] not in index"
+2024-08-06 10:24:54,528 - ERROR - Exception occurred: "['Plnt', '          Closing Stock', 'BUn'] not in index"
+2024-08-06 10:27:09,164 - ERROR - Exception occurred: cannot unpack non-iterable KeyError object
+2024-08-06 10:30:44,180 - ERROR - Exception occurred: cannot unpack non-iterable KeyError object
+2024-08-06 10:35:59,311 - ERROR - Exception occurred: cannot unpack non-iterable KeyError object
+2024-08-06 10:38:13,865 - ERROR - Exception occurred: DataFrame constructor not properly called!
+2024-08-06 10:40:32,571 - ERROR - Exception occurred: DataFrame constructor not properly called!
+2024-08-06 10:41:21,361 - ERROR - Exception occurred: DataFrame constructor not properly called!
+2024-08-06 10:47:23,945 - ERROR - Exception occurred: DataFrame constructor not properly called!
+2024-08-06 10:50:52,997 - ERROR - Exception occurred: DataFrame constructor not properly called!
+2024-08-06 10:52:34,736 - ERROR - Exception occurred: DataFrame constructor not properly called!
+2024-08-06 10:55:37,619 - ERROR - Exception occurred: DataFrame constructor not properly called!
+2024-08-06 10:57:32,285 - ERROR - Exception occurred: DataFrame constructor not properly called!
+2024-08-06 10:58:37,260 - ERROR - Exception occurred: DataFrame constructor not properly called!
+2024-08-06 10:59:46,482 - ERROR - Exception occurred: DataFrame constructor not properly called!
+2024-08-06 11:02:13,279 - ERROR - Exception occurred: DataFrame constructor not properly called!
+2024-08-06 11:04:20,320 - ERROR - Exception occurred: DataFrame constructor not properly called!
+2024-08-06 11:05:39,712 - ERROR - Exception occurred: DataFrame constructor not properly called!
+2024-08-06 11:08:41,421 - ERROR - Exception occurred: DataFrame constructor not properly called!
+2024-08-06 11:14:38,909 - ERROR - Exception occurred: DataFrame constructor not properly called!
+2024-08-06 11:16:18,267 - ERROR - Exception occurred: DataFrame constructor not properly called!
+2024-08-06 11:19:03,386 - ERROR - Exception occurred: DataFrame constructor not properly called!
+2024-08-06 11:27:56,002 - ERROR - Exception occurred: 11 columns passed, passed data had 10 columns
