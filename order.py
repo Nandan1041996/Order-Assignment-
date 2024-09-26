@@ -11,8 +11,8 @@ pending_columns_required = ['Plant', 'Sales Order', 'Item','Material No.', 'Sold
 rate_columns_required = ['Plant', 'Plant Zone', 'Plant Zone Desc', 'CFS Source', 'CFS Destination',
                             'Final Destination', 'Dest. Desc.', 'Route Name', 'MODE', 'Total with STO']
 # stock_columns_required = ['Plant', 'Material', 'Closing Stock', 'BUn']
-stock_columns_required = ['Plant', 'Material', 'Total Stock(Desp+Tra)']
-# Total Stock(Desp+Tra)
+stock_columns_required = ['Plant', 'Material', 'Total Stock(Desp+Tra']
+# Total Stock(Desp+Tra
 
 
 def validate_columns(df, df_name, required_columns):
@@ -50,7 +50,7 @@ def order_assignment_func(pending_so, rate_file, stock_file):
                                             due to not available any another plant and also same plant does not 
                                             contain Quentity.
 
-    rate_stck_df([DataFrame]) : It has Total Stock(Desp+Tra) with updated quantity.
+    rate_stck_df([DataFrame]) : It has Total Stock(Desp+Tra with updated quantity.
     '''
     try:
         # Read Excel files into DataFrames
@@ -60,11 +60,13 @@ def order_assignment_func(pending_so, rate_file, stock_file):
 
         # check if any column not present in uploaded file
         missing_col = [ col for col in pending_columns_required if col not in pending_df.columns]
+
         if len(missing_col)!=0:
             raise MissingColumnError(missing_col,'Pending Order File')
         
         # check if any column not present in uploaded file
         missing_col = [ col for col in rate_columns_required if col not in rate_df.columns]
+
         if len(missing_col)!=0:
             raise MissingColumnError(missing_col,'Rate File')
 
@@ -77,7 +79,7 @@ def order_assignment_func(pending_so, rate_file, stock_file):
                             'Final Destination', 'Dest. Desc.', 'Route Name', 'MODE', 'Total with STO']]
         
         # get required columns
-        stock_df = stock_df[['Plant', 'Material', 'Total Stock(Desp+Tra)']]
+        stock_df = stock_df[['Plant', 'Material', 'Total Stock(Desp+Tra']]
 
         # remove any space left and right available in column
         columns =  [col.strip() for col in list(stock_df.columns)]
@@ -85,6 +87,7 @@ def order_assignment_func(pending_so, rate_file, stock_file):
 
         # check if any column not present in uploaded file
         missing_col = [ col for col in stock_columns_required if col not in stock_df.columns]
+
         if len(missing_col)!=0:
             raise MissingColumnError(missing_col,'Stock File')
 
@@ -191,17 +194,17 @@ def filter_funct(rate_stck_df_c1,req_info_lst,pending_df):
             # data dict takes all the result keys and values for eacg pending order
             data_dict = {}
 
-            # if plant , material , Destination , mode and final destination and Total Stock(Desp+Tra) > open qty 
+            # if plant , material , Destination , mode and final destination and Total Stock(Desp+Tra > open qty 
             df = rate_stck_df_c1[(rate_stck_df_c1['Plant'] == i[0]) & (rate_stck_df_c1['Material'] == i[1]) 
                                 & (rate_stck_df_c1['Dest. Desc.'] == i[2]) & (rate_stck_df_c1['MODE'] == i[4]) 
                                 & (rate_stck_df_c1['Final Destination'] == i[7]) 
-                                &  (rate_stck_df_c1['Total Stock(Desp+Tra)']>= i[3])]
+                                &  (rate_stck_df_c1['Total Stock(Desp+Tra']>= i[3])]
             
             # when empty dataframe
             if len(df) == 0:
-                # if plant , material , Destination , mode and final destination and Total Stock(Desp+Tra)> open qty 
+                # if plant , material , Destination , mode and final destination and Total Stock(Desp+Tra> open qty 
                 df = rate_stck_df_c1[(rate_stck_df_c1['Material'] == i[1]) & (rate_stck_df_c1['Dest. Desc.'] == i[2]) 
-                                    & (rate_stck_df_c1['MODE'] == i[4]) & (rate_stck_df_c1['Total Stock(Desp+Tra)']>= i[3]) 
+                                    & (rate_stck_df_c1['MODE'] == i[4]) & (rate_stck_df_c1['Total Stock(Desp+Tra']>= i[3]) 
                                     & (rate_stck_df_c1['Final Destination'] == i[7])]        
                 if len(df) ==0:
                     # Plant, Material, Destination, Open qty, Incoterm , Salse order, trp zone , sold to makes row unique
@@ -228,7 +231,7 @@ def filter_funct(rate_stck_df_c1,req_info_lst,pending_df):
                             filter_df = filter_df.iloc[:1,:]
                     
                         result_df = filtered_mat_df.merge(filter_df,left_on=['Plant','Incoterms','Destination','Trp Zone','Material No.'],right_on=['Plant','MODE','Dest. Desc.','Final Destination','Material'])
-                        result_df = result_df[['Total Stock(Desp+Tra)','Plant', 'Plant Zone', 'Plant Zone Desc','Final Destination','Sold to','Dest. Desc.', 'MODE','Total with STO', 'Material','UoM']]
+                        result_df = result_df[['Total Stock(Desp+Tra','Plant', 'Plant Zone', 'Plant Zone Desc','Final Destination','Sold to','Dest. Desc.', 'MODE','Total with STO', 'Material','UoM']]
                         result_df.sort_values('Total with STO',inplace=True)  
                         data_dict.update({'order_plant':i[0]})          
                         data_dict.update({'confirm':'No'})
@@ -267,12 +270,12 @@ def filter_funct(rate_stck_df_c1,req_info_lst,pending_df):
                     # selecting one record because we have diff value for same root so silecting lower cost
                     df = df.iloc[:1,:]
 
-                if i[3]<=df['Total Stock(Desp+Tra)'].reset_index(drop=True)[0]:
-                    closing_stck =  df['Total Stock(Desp+Tra)'].reset_index(drop=True)[0] - i[3]
+                if i[3]<=df['Total Stock(Desp+Tra'].reset_index(drop=True)[0]:
+                    closing_stck =  df['Total Stock(Desp+Tra'].reset_index(drop=True)[0] - i[3]
                     plant = df['Plant'].reset_index(drop=True)[0]
                     total_with_sto = df['Total with STO'].reset_index(drop=True)[0]
                     rate_stck_df_c1.loc[(rate_stck_df_c1['Plant'] == plant) & (rate_stck_df_c1['Material'] == i[1]) 
-                                        & (rate_stck_df_c1['Total with STO'] == total_with_sto),'Total Stock(Desp+Tra)'] = closing_stck
+                                        & (rate_stck_df_c1['Total with STO'] == total_with_sto),'Total Stock(Desp+Tra'] = closing_stck
                     
                     data_dict.update({'order_plant':i[0]})
                     data_dict.update({'confirm':'Yes'})
