@@ -113,16 +113,16 @@ def order_assignment_func(pending_so, rate_file, stock_file):
 
         unique_plant_lst = rate_df_notna['Plant'].unique()
 
-        # this loop is used for assignment of Proposed level to dest plantwise asc order
+        # this loop is used for assignment of Proposed level to destination plant wise asc order
         for j in unique_plant_lst:
             plant_dicti ={}
-            b = rate_df_notna[rate_df_notna['Plant'] == j]
-            unique_dest_per_plant = b['Dest. Desc.'].unique()
+            plant_wise_df = rate_df_notna[rate_df_notna['Plant'] == j]
+            unique_dest_per_plant = plant_wise_df['Dest. Desc.'].unique()
             for i in unique_dest_per_plant:
-                a = b[b['Dest. Desc.']== i]
+                plant_dest_wise_df= plant_wise_df[plant_wise_df['Dest. Desc.']== i]
                 dicti = {}
                 cnt=1
-                for k in list(a['Total with STO']):
+                for k in list(plant_dest_wise_df['Total with STO']):
                     if k not in dicti.keys():
                         dicti[k]= 'L'+str(cnt)
                     cnt+=1
@@ -132,12 +132,12 @@ def order_assignment_func(pending_so, rate_file, stock_file):
         # assign propsed level
         df_lst = []
         for k,v in proposed_level.items():
-            a = rate_df_notna[rate_df_notna['Plant']== k]
+            select_plant_df = rate_df_notna[rate_df_notna['Plant']== k]
             
             for key,val in v.items():
-                b = a[a['Dest. Desc.']==key]
-                b['Proposed Level'] = b['Total with STO'].map(val)
-                df_lst.append(b)
+                select_plant_desc_df = select_plant_df[select_plant_df['Dest. Desc.']==key]
+                select_plant_desc_df['Proposed Level'] = select_plant_desc_df['Total with STO'].map(val)
+                df_lst.append(select_plant_desc_df)
         rate_res_df = pd.concat(df_lst,axis=0)
         # final rate df with added Proposed Level
         rate_df = pd.concat([rate_res_df,rate_df_na],axis=0)  
@@ -162,13 +162,12 @@ def order_assignment_func(pending_so, rate_file, stock_file):
         req_info_lst = list(zip(pend_plant, pend_mat, pend_dest, pend_open_qty,pend_inco,pend_Order,pend_disp_date,pend_final_dest,pend_sold_to,pend_party_name))
         # Call filter_funct to process data
         # not_in,lst= filter_funct(rate_stck_df, req_info_lst, pending_df)
-        lst,not_in= filter_funct(rate_stck_df, req_info_lst, pending_df)
+        lst= filter_funct(rate_stck_df, req_info_lst, pending_df)
 
         order_with_route_df = pd.DataFrame(lst)
         # orders_root_not_found_df = pd.DataFrame(not_in,columns= ['plant', 'material', 'destination', 'open_qty','mode','order_no','disp_date','final_dest','sold_to'])
-        orders_root_not_found_df = pd.DataFrame(not_in,columns= ['plant', 'material', 'destination', 'open_qty','mode','order_no','disp_date','final_dest','sold_to','party_name'])
 
-        return order_with_route_df, orders_root_not_found_df, rate_stck_df
+        return order_with_route_df, rate_stck_df
     
     except MissingColumnError as e:
         return e,None,None
@@ -187,11 +186,10 @@ def filter_funct(rate_stck_df_c1,req_info_lst,pending_df):
     not in : tuple list 
     '''
     try:
-        not_in = []
         lst = []
         for i in req_info_lst:
 
-            # data dict takes all the result keys and values for eacg pending order
+            # data dict takes all the result keys and values for each pending order
             data_dict = {}
 
             # if plant , material , Destination , mode and final destination and Total Stock(Desp+Tra > open qty 
@@ -214,15 +212,28 @@ def filter_funct(rate_stck_df_c1,req_info_lst,pending_df):
                                                 & (pending_df['Trp Zone']==i[7]) & (pending_df['Sold to']==i[8]) & 
                                                 (pending_df['Disp. Date']==i[6])]
 
-                    # because in req_info_lst we have duplicates so that i select only 1 records
+                    # because in req_info_lst contains duplicate records so that have to select only one records
                     filtered_mat_df = filtered_mat_df.iloc[:1,:]
 
                     # filter_df used to check Material available 
                     filter_df = rate_stck_df_c1[(rate_stck_df_c1['Plant']==i[0]) & (rate_stck_df_c1['Material']==i[1]) & (rate_stck_df_c1['Dest. Desc.']== i[2]) & (rate_stck_df_c1['MODE']== i[4]) & (rate_stck_df_c1['Final Destination'] == i[7])]
-                    # len(filter_df) == 0 then not able to find out root and cost 
+                    # len(filter_df) == 0 then not able to find out route and cost 
                     if len(filter_df) == 0:
+                        data_dict.update({'order_plant':i[0]})          
+                        data_dict.update({'confirm':'No (Freight Rate is not Available.)'})
+                        data_dict.update({'Required_Stock': i[3]})
+                        data_dict.update({'Salse Order' : i[5]})
+                        data_dict.update({'Disp. Date': i[6]})
+                        data_dict.update({'Trp. Zone':i[7]})
+                        data_dict.update({'Customer Name':i[9]})
+                        data_dict.update({'Material':i[1]})
+                        data_dict.update({'MODE':i[4]})
+                        data_dict.update({'Final Destination': i[7]})
+                        data_dict.update({'Destination': i[2]})
+                        data_dict.update({'Sold to':i[8]})
                         # not_in is a list contains order names of which route is not available in rate_stck_df_c1 dataframe
-                        not_in.append(i)
+                        # not_in.append(data_dict)
+                        lst.append(data_dict)
                         continue
 
                     else:
@@ -234,7 +245,7 @@ def filter_funct(rate_stck_df_c1,req_info_lst,pending_df):
                         result_df = result_df[['Total Stock(Desp+Tra','Plant', 'Plant Zone', 'Plant Zone Desc','Final Destination','Sold to','Dest. Desc.', 'MODE','Total with STO', 'Material','UoM']]
                         result_df.sort_values('Total with STO',inplace=True)  
                         data_dict.update({'order_plant':i[0]})          
-                        data_dict.update({'confirm':'No'})
+                        data_dict.update({'confirm':'No(Required quantity is less than available quantity.)'})
                         data_dict.update({'Required_Stock': i[3]})
                         data_dict.update({'Salse Order' : i[5]})
                         data_dict.update({'Disp. Date': i[6]})
@@ -261,7 +272,7 @@ def filter_funct(rate_stck_df_c1,req_info_lst,pending_df):
                         j.update({'Customer Name': [9]})
                         j.update({'Trp. Zone':i[7]})
                     # multiways_lst.extend(lst_dict)
-                    lst.append(lst)
+                    lst.append(lst_dict)
                     continue
                         
                 # when CFS Source and CFS Destination is nan then:
@@ -289,7 +300,7 @@ def filter_funct(rate_stck_df_c1,req_info_lst,pending_df):
                     data_dict.update(df.iloc[:1,:].to_dict(orient = 'records')[0])
                     lst.append(data_dict)
    
-        return lst, not_in
+        return lst
     except Exception as e:
         return e,None
 
