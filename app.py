@@ -74,7 +74,7 @@ def upload_files():
         file_path2 = os.path.join(app.config['UPLOAD_FOLDER'], filename2)
         file_path3 = os.path.join(app.config['UPLOAD_FOLDER'], filename3)
 
-        result_df1, result_df2, rate_stck_df_c1 = order_assignment_func(file_path1, file_path2, file_path3)
+        result_df1, rate_stck_df_c1 = order_assignment_func(file_path1, file_path2, file_path3)
 
         if not isinstance(result_df1,pd.DataFrame):
             return render_template('error_page.html', error_message=str(result_df1))
@@ -88,7 +88,6 @@ def upload_files():
             file3_path = os.path.join(app.config['UPLOAD_FOLDER'], 'order_route_not_found.xlsx')
 
             result_df1.to_excel(file1_path, index=False)
-            result_df2.to_excel(file3_path, index=False)
             rate_stck_df_c1.to_excel(os.path.join(app.config['UPLOAD_FOLDER'], 'updated_stock_file.xlsx'), index=False)
 
             # Create a zip archive containing all Excel files
@@ -182,5 +181,5 @@ def download_csv():
         return jsonify({'error': f'An unexpected error occurred: {str(e)}'}), 500
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0',port=5000)
+    app.run(debug=True)
 
