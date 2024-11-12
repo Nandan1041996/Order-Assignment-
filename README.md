@@ -1,5 +1,14 @@
 # Order-Assignment-
-This is a small project in which i have pending orders of customer in pending order file and rate file contains plant and from that plant what is the charges to send order to customer and stock file contains stock availability for perticular plant 
-objective for this project is to automate order assign to perticular customer available in pending order file and according to that make changes in stock file where plant wise stock is mensioned.
-We get result in Uploads folder as well as on front-end. 
-In upload folder i will get order_with_route excel file contains no of confirm orders status with Yes and No (Yes means that order is confirmed and No means Order is not Confirm because of stock is not available in any plant). order_route_not_found excel file contains records from pending orders which are not confirmed because no route available in  rate file. updated_stock_file contains records says after completed order how much stock available in perticular plant.
+--> objective : To automate placement of order to perticular customer available in pending order file and according to that make changes in stock file where plant wise stock is given.
+
+--> User Input copntains : 1) pending order file : pending orders of customer, 2) rate file : from plant what is the charges to send material to customer , 3) stock file contains stock availability in perticular plant 
+
+--> File format and Columns:
+   All file format should be xlsx. or xls.
+  1) Pending Order File : File must contain the following columns:
+    'Plant', 'Sales Order', 'Material No.', 'Sold to', 'Ship to Party Name','Sch Open Qty.', 'UoM', 'Disp. Date', 'Trp Zone', 'Destination', 'Incoterms'
+  2) Rate File : File must contain the following columns:
+    'Plant', 'Plant Zone', 'Plant Zone Desc'. 'CFS Source', 'CFS Destination','Final Destination', 'Dest. Desc.', Route Name', 'MODE','Total with STO'
+  3) Stock File : File must contain the following columns:
+    'Palnt', 'Material', 'Total Stock(Desp+Tra'
+--> When User click on submit button all calculation in backend perform and we get Unique Order number, User can select all the order number to see or specific orders to see       that Order is placed or not and user can download file as well.
